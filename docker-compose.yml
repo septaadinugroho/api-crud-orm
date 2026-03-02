@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    container_name: supercar-api
+    ports:
+      - "3000:3000"
+    environment:
+      # Perhatiin: host-nya ganti jadi 'db' (nama servis postgres lu)
+      DATABASE_URL: postgresql://septa:password123@db:5432/crud_db
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-crud
+    restart: always
+    environment:
+      POSTGRES_USER: septa
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: crud_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
